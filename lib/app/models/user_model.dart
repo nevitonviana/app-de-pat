@@ -50,9 +50,9 @@ class UserModel {
     keyMapper ??= (key) => key;
 
     return {
-      keyMapper('email'): this.email,
-      keyMapper('registerType'): this.registerType,
-      keyMapper('imgAvatar'): this.imgAvatar,
+      keyMapper('email'): email,
+      keyMapper('registerType'): registerType,
+      keyMapper('imgAvatar'): imgAvatar,
     };
   }
 
