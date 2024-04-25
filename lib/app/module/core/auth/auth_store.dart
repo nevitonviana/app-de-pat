@@ -9,6 +9,12 @@ class AuthStore = AuthStoreBase with _$AuthStore;
 abstract class AuthStoreBase with Store {
   @readonly
   UserModel? _userLogged;
+  bool teste = true;
+
+  bool muder() {
+    teste = false;
+    return false;
+  }
 
   @action
   Future<void> loadUserLogged() async {

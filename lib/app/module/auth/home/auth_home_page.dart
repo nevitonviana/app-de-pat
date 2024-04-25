@@ -25,11 +25,11 @@ class _AuthHomePageState extends State<AuthHomePage> {
       } else {
         Modular.to.navigate('/auth/login');
       }
-
-      WidgetsBinding.instance.addPersistentFrameCallback((_) {
-        widget._authStore.loadUserLogged();
-      });
+      print("object'1111");
+      WidgetsBinding.instance.addPersistentFrameCallback((_) {});
     });
+    final greeting = Observable('Hello World');
+    reaction((_) => greeting.value, (msg) => print(msg));
   }
 
   @override
