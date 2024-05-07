@@ -19,7 +19,7 @@ class _LoginRegisterButtons extends StatelessWidget {
         ),
         RoundedButtonWithIcon(
           onTap: () {},
-          width: .42.sw,
+          width: .42,
           color: const Color(0xffe15031),
           icon: Cuidapet.google,
           label: "Google",

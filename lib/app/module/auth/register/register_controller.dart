@@ -1,6 +1,9 @@
 import 'package:mobx/mobx.dart';
 
+import '../../../core/exception/user_exists_exception.dart';
 import '../../../core/logger/app_logger.dart';
+import '../../../core/ui/widgets/loader.dart';
+import '../../../core/ui/widgets/messages.dart';
 import '../../../services/user/user_service.dart';
 
 part 'register_controller.g.dart';
@@ -15,5 +18,18 @@ abstract class RegisterControllerBase with Store {
       : _userService = userService,
         _log = log;
 
-  void register({required String email, required String password}) {}
+  Future<void> register({required String email, required String password}) async {
+    try {
+      Loader.show();
+      await _userService.register(email, password);
+      Loader.hide();
+    } on UserExistsException {
+      Loader.hide();
+      Messages.alert("Email ja ultilizado");
+    } catch (e, s) {
+      _log.error('Error ao cadastrar usuario');
+      Loader.hide();
+      Messages.alert("Erro ao registar usuario");
+    }
+  }
 }
