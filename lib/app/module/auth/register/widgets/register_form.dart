@@ -21,6 +21,7 @@ class _RegisterFormState extends State<_RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = context.watch<RegisterController>();
     return Form(
       key: _formKey,
       child: Column(
@@ -55,7 +56,9 @@ class _RegisterFormState extends State<_RegisterForm> {
             label: "Cadatrar",
             onPressed: () {
               final formValid = _formKey.currentState?.validate() ?? false;
-              if (formValid) {}
+              if (formValid) {
+                controller.register(email: _loginEc.text, password: _senhaEc.text);
+              }
             },
           )
         ],
