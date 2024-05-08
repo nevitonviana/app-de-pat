@@ -2,9 +2,12 @@ import 'package:dio/dio.dart';
 
 import '../../helpers/constants.dart';
 import '../../helpers/environments.dart';
+import '../../local_storage/local_storage.dart';
+import '../../logger/app_logger.dart';
 import '../rest_client.dart';
 import '../rest_client_exception.dart';
 import '../rest_client_response.dart';
+import 'auth_interceptor.dart';
 
 class DioRestClient implements RestClient {
   late final Dio _dio;
@@ -16,19 +19,23 @@ class DioRestClient implements RestClient {
         milliseconds: int.parse(Environments.param(Constants.Env_REST_CLIENT_RECEIVE_TIMEOUT_KEY) ?? "0")),
   );
 
-  DioRestClient({BaseOptions? baseOptions}) {
+  DioRestClient({required LocalStorage localStorage, required AppLogger log, BaseOptions? baseOptions}) {
     _dio = Dio(baseOptions ?? _defaultOption);
+    _dio.interceptors.addAll([
+      AuthInterceptor(localStorage: localStorage, log: log),
+      LogInterceptor(requestBody: true, responseBody: true),
+    ]);
   }
 
   @override
   RestClient auth() {
-    _defaultOption.extra['auth_required'] = true;
+    _defaultOption.extra[Constants.REST_CLIENT_AUTH_REQUIRED_KEY] = true;
     return this;
   }
 
   @override
   RestClient unauth() {
-    _defaultOption.extra['auth_required'] = false;
+    _defaultOption.extra[Constants.REST_CLIENT_AUTH_REQUIRED_KEY] = false;
     return this;
   }
 
