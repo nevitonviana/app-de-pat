@@ -34,4 +34,31 @@ class UserServiceImpl implements UserService {
       throw const Failure(message: "Erro ao criar usuario");
     }
   }
+
+  @override
+  Future<void> login(String email, String password) async {
+    try {
+      final firebaseAuth = FirebaseAuth.instance;
+      final loginMethods = await firebaseAuth.fetchSignInMethodsForEmail(email);
+      if (loginMethods.isEmpty) {
+        throw UserExistsException();
+      }
+
+      if (loginMethods.contains("passoword")) {
+        final userCredential =
+            await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+
+        final userVerified = userCredential.user?.emailVerified ?? false;
+        if (!userVerified) {
+          userCredential.user?.sendEmailVerification();
+          throw const Failure(message: "email de confirmação por favor verifique sua caixa de spam");
+        }
+      } else {
+        throw const Failure(message: "login nao pode ser feito por email e password");
+      }
+    } on FirebaseAuthException catch (e, s) {
+      _log.error("Usuario ou senha invalidos ${e.code}", e, s);
+      throw const Failure(message: "Usuario ou senha invalidos");
+    }
+  }
 }
