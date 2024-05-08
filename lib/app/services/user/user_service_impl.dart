@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../core/exception/failure.dart';
 import '../../core/exception/user_exists_exception.dart';
+import '../../core/helpers/constants.dart';
+import '../../core/local_storage/local_storage.dart';
 import '../../core/logger/app_logger.dart';
 import '../../repositories/user/user_repository.dart';
 import 'user_service.dart';
@@ -9,12 +11,15 @@ import 'user_service.dart';
 class UserServiceImpl implements UserService {
   final UserRepository _repository;
   final AppLogger _log;
+  final LocalStorage _localStorage;
 
   const UserServiceImpl({
     required UserRepository repository,
     required AppLogger log,
+    required LocalStorage localStorage,
   })  : _repository = repository,
-        _log = log;
+        _log = log,
+        _localStorage = localStorage;
 
   @override
   Future<void> register(String email, String password) async {
@@ -53,6 +58,8 @@ class UserServiceImpl implements UserService {
           userCredential.user?.sendEmailVerification();
           throw const Failure(message: "email de confirmação por favor verifique sua caixa de spam");
         }
+        final accessToken = await _repository.login(email, password);
+        await _saveAccessToken(accessToken);
       } else {
         throw const Failure(message: "login nao pode ser feito por email e password");
       }
@@ -61,4 +68,7 @@ class UserServiceImpl implements UserService {
       throw const Failure(message: "Usuario ou senha invalidos");
     }
   }
+
+  Future<void> _saveAccessToken(String accessToken) =>
+      _localStorage.write(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY, accessToken);
 }

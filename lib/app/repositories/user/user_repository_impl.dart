@@ -31,4 +31,23 @@ class UserRepositoryImpl implements UserRepository {
       throw const Failure(message: "error ao registrar usuario");
     }
   }
+
+  @override
+  Future<String> login(String email, String password) async {
+    try {
+      final result = await _restClient.unauth().post('/auth/', data: {
+        'login': email,
+        'password': password,
+        'social_login': false,
+        'supplier_user': false,
+      });
+      return result.data['access_token'];
+    } on RestClientException catch (e, s) {
+      if (e.statusCode == 403) {
+        throw const Failure(message: "Usuario inconsistente entre em cotato com o superte!!");
+      }
+      _log.error("erro ao ralizar login", e, s);
+      throw const Failure(message: "erro ao realizar login, tenta novamente mais tarde");
+    }
+  }
 }
