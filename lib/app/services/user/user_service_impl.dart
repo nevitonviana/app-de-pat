@@ -12,14 +12,17 @@ class UserServiceImpl implements UserService {
   final UserRepository _repository;
   final AppLogger _log;
   final LocalStorage _localStorage;
+  final LocalSecureStorage _localSecureStorage;
 
   const UserServiceImpl({
     required UserRepository repository,
     required AppLogger log,
     required LocalStorage localStorage,
+    required LocalSecureStorage localSecureStorage,
   })  : _repository = repository,
         _log = log,
-        _localStorage = localStorage;
+        _localStorage = localStorage,
+        _localSecureStorage = localSecureStorage;
 
   @override
   Future<void> register(String email, String password) async {
@@ -60,6 +63,7 @@ class UserServiceImpl implements UserService {
         }
         final accessToken = await _repository.login(email, password);
         await _saveAccessToken(accessToken);
+        await _confirmLogin();
       } else {
         throw const Failure(message: "login nao pode ser feito por email e password");
       }
@@ -71,4 +75,13 @@ class UserServiceImpl implements UserService {
 
   Future<void> _saveAccessToken(String accessToken) =>
       _localStorage.write(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY, accessToken);
+
+  _confirmLogin() async {
+    final confirmLoginModel = await _repository.confirmLogin();
+    await _saveAccessToken(confirmLoginModel.accessToken);
+    await _localSecureStorage.write(
+      Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+      confirmLoginModel.refreshToken,
+    );
+  }
 }

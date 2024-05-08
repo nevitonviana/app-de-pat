@@ -1,8 +1,13 @@
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import '../../core/exception/failure.dart';
 import '../../core/exception/user_exists_exception.dart';
 import '../../core/logger/app_logger.dart';
 import '../../core/rest_client/rest_client.dart';
 import '../../core/rest_client/rest_client_exception.dart';
+import '../../models/confirm_login_model.dart';
 import 'user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
@@ -48,6 +53,23 @@ class UserRepositoryImpl implements UserRepository {
       }
       _log.error("erro ao ralizar login", e, s);
       throw const Failure(message: "erro ao realizar login, tenta novamente mais tarde");
+    }
+  }
+
+  @override
+  Future<ConfirmLoginModel> confirmLogin() async {
+    try {
+      final deviceToken = await FirebaseMessaging.instance.getToken();
+
+      final result = await _restClient.auth().patch('/auth/confirm', data: {
+        'ios_token': Platform.isIOS ? deviceToken : null,
+        'android_token': Platform.isAndroid ? deviceToken : null,
+      });
+
+      return ConfirmLoginModel.fromMap(result.data);
+    } on RestClientException catch (e, s) {
+      _log.error("erro ao confirma login");
+      throw const Failure(message: "erro ao confirma login");
     }
   }
 }
