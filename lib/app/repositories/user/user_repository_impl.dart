@@ -8,6 +8,7 @@ import '../../core/logger/app_logger.dart';
 import '../../core/rest_client/rest_client.dart';
 import '../../core/rest_client/rest_client_exception.dart';
 import '../../models/confirm_login_model.dart';
+import '../../models/user_model.dart';
 import 'user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
@@ -70,6 +71,17 @@ class UserRepositoryImpl implements UserRepository {
     } on RestClientException catch (e, s) {
       _log.error("erro ao confirma login");
       throw const Failure(message: "erro ao confirma login");
+    }
+  }
+
+  @override
+  Future<UserModel> getUserLogged() async {
+    try {
+      final result = await _restClient.get("/user/");
+      return UserModel.fromMap(result.data);
+    } on RestClientException catch (e, s) {
+      _log.error("erro ao busca dados do usuario logado ", e, s);
+      throw const Failure(message: "eror ao buscar dados do Usuaria logado");
     }
   }
 }
