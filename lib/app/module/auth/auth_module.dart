@@ -1,5 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../repositories/social/social_repository.dart';
+import '../../repositories/social/social_repository_impl.dart';
 import '../../repositories/user/user_repository.dart';
 import '../../repositories/user/user_repository_impl.dart';
 import '../../services/user/user_service.dart';
@@ -12,6 +14,7 @@ class AuthModule extends Module {
   void binds(i) {
     i.addLazySingleton<UserRepository>(UserRepositoryImpl.new);
     i.addLazySingleton<UserService>(UserServiceImpl.new);
+    i.addLazySingleton<SocialRepository>(SocialRepositoryImpl.new);
   }
 
   @override
