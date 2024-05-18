@@ -108,7 +108,9 @@ class UserServiceImpl implements UserService {
     try {
       switch (socialLoginType) {
         case SocialLoginType.Facebook:
-        // break;
+          socialModel = await _socialRepository.facebookLogin();
+          authCredential = FacebookAuthProvider.credential(socialModel.accessToken);
+          break;
         case SocialLoginType.google:
           socialModel = await _socialRepository.googleLogin();
           authCredential = GoogleAuthProvider.credential(

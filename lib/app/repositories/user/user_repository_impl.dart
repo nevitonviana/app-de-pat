@@ -105,6 +105,5 @@ class UserRepositoryImpl implements UserRepository {
       _log.error("erro ao ralizar login", e, s);
       throw const Failure(message: "erro ao realizar login, tenta novamente mais tarde");
     }
-    }
   }
 }
