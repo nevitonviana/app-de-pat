@@ -8,6 +8,7 @@ import '../../core/logger/app_logger.dart';
 import '../../core/rest_client/rest_client.dart';
 import '../../core/rest_client/rest_client_exception.dart';
 import '../../models/confirm_login_model.dart';
+import '../../models/social_network_model.dart';
 import '../../models/user_model.dart';
 import 'user_repository.dart';
 
@@ -82,6 +83,28 @@ class UserRepositoryImpl implements UserRepository {
     } on RestClientException catch (e, s) {
       _log.error("erro ao busca dados do usuario logado ", e, s);
       throw const Failure(message: "eror ao buscar dados do Usuaria logado");
+    }
+  }
+
+  @override
+  Future<String> loginSocial(SocialNetworkModel model) async {
+    try {
+      final result = await _restClient.unauth().post('/auth/', data: {
+        "login": model.email,
+        "social_login": true,
+        "avatar": model.avatar,
+        "social_type": model.type,
+        "social_key": model.id,
+        "supplier_user": false
+      });
+      return result.data["access_token"];
+    } on RestClientException catch (e, s) {
+      if (e.statusCode == 403) {
+        throw const Failure(message: "Usuario inconsistente entre em cotato com o superte!!");
+      }
+      _log.error("erro ao ralizar login", e, s);
+      throw const Failure(message: "erro ao realizar login, tenta novamente mais tarde");
+    }
     }
   }
 }
