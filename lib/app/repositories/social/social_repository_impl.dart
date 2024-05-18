@@ -28,7 +28,9 @@ class SocialRepositoryImpl implements SocialRepository {
         case LoginStatus.operationInProgress:
           throw Failure(message: result.message ?? "Erro ao realizar login ");
       }
-    } catch (e, s) {}
+    } catch (e, s) {
+      throw const Failure(message: "Error ao logar com o facebbok");
+    }
   }
 
   @override
