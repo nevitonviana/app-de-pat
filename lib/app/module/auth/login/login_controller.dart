@@ -1,3 +1,4 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../core/exception/failure.dart';
@@ -26,11 +27,11 @@ abstract class LoginControllerBase with Store {
       Loader.show();
 
       await _userService.login(email, password);
-
+      Modular.to.navigate("/auth/");
       Loader.hide();
     } on Failure catch (e, s) {
       final errorMessage = e.message ?? "erro ao realizar login";
-      _log.error(errorMessage);
+      _log.error(errorMessage, e, s);
       Messages.alert(errorMessage);
     } on UserNotExistsException {
       const errorMessage = "usuario nao cadastrado";

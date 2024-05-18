@@ -88,7 +88,8 @@ class UserServiceImpl implements UserService {
 
   _getUserData() async {
     final userModel = await _repository.getUserLogged();
-    await _localStorage.write(Constants.LOCAL_STORAGE_USER_LOGGED_DATA_KEY, userModel.toMap());
+    await _localStorage.write<String>(
+        Constants.LOCAL_STORAGE_USER_LOGGED_DATA_KEY, userModel.toMap() as String);
     // await _localStorage.write("key", userModel.toJson());
   }
 }
