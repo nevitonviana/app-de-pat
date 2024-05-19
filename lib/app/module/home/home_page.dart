@@ -17,6 +17,7 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
       appBar: AppBar(
         title: const Text("Home"),
       ),
+      body: Container(),
     );
   }
 }
