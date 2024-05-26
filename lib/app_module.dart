@@ -7,7 +7,6 @@ import 'app/module/home/home_module.dart';
 
 class AppModule extends Module {
   @override
-  @override
   void routes(r) {
     r.module("/auth", module: AuthModule());
     r.module("/home", module: HomeModule());

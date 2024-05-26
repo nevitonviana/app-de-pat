@@ -50,8 +50,6 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
 
   Future<List<PlaceModel>> _suggestionsCallback(String pattern) async {
     if (pattern.isNotEmpty) {
-      print("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-      print(pattern);
       return controller.searchAddress(pattern);
     }
     return <PlaceModel>[];
