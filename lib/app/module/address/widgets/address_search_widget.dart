@@ -63,7 +63,7 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
 class _ItemTile extends StatelessWidget {
   final String address;
 
-  const _ItemTile({super.key, required this.address});
+  const _ItemTile({required this.address});
 
   @override
   Widget build(BuildContext context) {

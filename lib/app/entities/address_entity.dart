@@ -30,13 +30,7 @@ class AddressEntity {
 
   @override
   String toString() {
-    return 'AddressEntity{' +
-        ' id: $id,' +
-        ' address: $address,' +
-        ' lat: $lat,' +
-        ' lng: $lng,' +
-        ' additional: $additional,' +
-        '}';
+    return 'AddressEntity{ id: $id, address: $address, lat: $lat, lng: $lng, additional: $additional,}';
   }
 
   AddressEntity copyWith({

@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 import '../../core/database/sqlite_connection_factory.dart';
 import '../../core/exception/failure.dart';
 import '../../core/helpers/environments.dart';
@@ -16,7 +14,6 @@ class AddressRepositoryImpl implements AddressRepository {
   @override
   Future<List<PlaceModel>> findAddressByGooglePlaces(String addressPattern) async {
     try {
-      final placeEd = TextEditingController();
       final googleApeKey = Environments.param("google_api_key");
       if (googleApeKey == Null) {
         throw const Failure(message: "Google Api key not found");

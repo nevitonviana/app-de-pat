@@ -27,8 +27,6 @@ class _AuthHomePageState extends State<AuthHomePage> {
       }
       WidgetsBinding.instance.addPersistentFrameCallback((_) {});
     });
-    final greeting = Observable('Hello World');
-    reaction((_) => greeting.value, (msg) => print(msg));
   }
 
   @override
