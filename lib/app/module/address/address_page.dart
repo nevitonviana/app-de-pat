@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../../core/ui/extensions/theme_extension.dart';
 import '../../models/place_model.dart';
+import 'address_search_controller.dart';
 
 part 'widgets/address_item.dart';
 part 'widgets/address_search_widget.dart';
@@ -39,7 +41,12 @@ class _AddressPageState extends State<AddressPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              const _AddressSearchWidget(),
+              _AddressSearchWidget(
+                addressSelectedCallback: (place) {
+                  print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                  print(place.address);
+                },
+              ),
               const SizedBox(height: 30),
               const ListTile(
                 leading: CircleAvatar(

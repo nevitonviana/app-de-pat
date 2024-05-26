@@ -6,6 +6,7 @@ import '../../repositories/user/user_repository.dart';
 import '../../repositories/user/user_repository_impl.dart';
 import '../../services/user/user_service.dart';
 import '../../services/user/user_service_impl.dart';
+import '../core/core_module.dart';
 import 'home/auth_home_page.dart';
 import 'login/login_module.dart';
 import 'register/register_module.dart';
@@ -17,6 +18,9 @@ class AuthModule extends Module {
     i.addLazySingleton<UserService>(UserServiceImpl.new);
     i.addLazySingleton<SocialRepository>(SocialRepositoryImpl.new);
   }
+
+  @override
+  List<Module> get imports => [CoreModule()];
 
   @override
   void routes(r) {

@@ -1,13 +1,19 @@
 part of "../address_page.dart";
 
+typedef AddressSelectedCallback = void Function(PlaceModel);
+
 class _AddressSearchWidget extends StatefulWidget {
-  const _AddressSearchWidget();
+  final AddressSelectedCallback addressSelectedCallback;
+
+  const _AddressSearchWidget({required this.addressSelectedCallback});
 
   @override
   State<_AddressSearchWidget> createState() => _AddressSearchWidgetState();
 }
 
 class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
+  final controller = Modular.get<AddressSearchController>();
+
   @override
   Widget build(BuildContext context) {
     return TypeAheadField(
@@ -22,6 +28,8 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
           borderRadius: BorderRadius.circular(20),
           child: TextFormField(
             focusNode: focusNode,
+            // focusNode: searchTextFn,
+            // controller: searchTextEc,
             controller: controller,
             decoration: InputDecoration(
               prefixIcon: const Icon(Icons.location_on),
@@ -36,16 +44,22 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
       },
       itemBuilder: (_, value) => _ItemTile(address: value.address),
       onSelected: _onSelected,
-      // suggestionsCallback: _suggestionsCallback,
       suggestionsCallback: _suggestionsCallback,
     );
   }
 
-  FutureOr<List<PlaceModel>> _suggestionsCallback(String pattern) {
-    return [PlaceModel(address: "address", lat: 545, lng: 4245)];
+  Future<List<PlaceModel>> _suggestionsCallback(String pattern) async {
+    if (pattern.isNotEmpty) {
+      print("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      print(pattern);
+      return controller.searchAddress(pattern);
+    }
+    return <PlaceModel>[];
   }
 
-  void _onSelected(PlaceModel selected) {}
+  void _onSelected(PlaceModel selected) {
+    widget.addressSelectedCallback(selected);
+  }
 }
 
 class _ItemTile extends StatelessWidget {
