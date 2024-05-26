@@ -61,12 +61,12 @@ class SocialNetworkModel {
     keyMapper ??= (key) => key;
 
     return {
-      keyMapper('id'): this.id,
-      keyMapper('name'): this.name,
-      keyMapper('email'): this.email,
-      keyMapper('type'): this.type,
-      keyMapper('accessToken'): this.accessToken,
-      keyMapper('avatar'): this.avatar,
+      keyMapper('id'): id,
+      keyMapper('name'): name,
+      keyMapper('email'): email,
+      keyMapper('type'): type,
+      keyMapper('accessToken'): accessToken,
+      keyMapper('avatar'): avatar,
     };
   }
 

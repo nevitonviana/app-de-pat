@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../core/exception/failure.dart';
@@ -81,6 +83,7 @@ class UserServiceImpl implements UserService {
   }
 
   Future<void> _saveAccessToken(String accessToken) =>
+      // ignore: void_checks
       _localStorage.write(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY, accessToken);
 
   _confirmLogin() async {
@@ -103,7 +106,6 @@ class UserServiceImpl implements UserService {
   Future<void> socialLogin(SocialLoginType socialLoginType) async {
     final SocialNetworkModel socialModel;
     final AuthCredential authCredential;
-    final firebaseAuth = FirebaseAuth.instance;
 
     try {
       switch (socialLoginType) {

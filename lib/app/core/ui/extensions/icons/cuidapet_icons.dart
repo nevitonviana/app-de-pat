@@ -11,7 +11,7 @@
 ///      fonts:
 ///       - asset: fonts/Cuidapet.ttf
 ///
-/// 
+///
 /// * Font Awesome 4, Copyright (C) 2016 by Dave Gandy
 ///         Author:    Dave Gandy
 ///         License:   SIL ()
@@ -21,6 +21,8 @@
 ///         License:   SIL (http://scripts.sil.org/OFL)
 ///         Homepage:  http://www.entypo.com
 ///
+library;
+
 import 'package:flutter/widgets.dart';
 
 class Cuidapet {

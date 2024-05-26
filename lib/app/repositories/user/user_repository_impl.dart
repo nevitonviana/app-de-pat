@@ -69,7 +69,7 @@ class UserRepositoryImpl implements UserRepository {
       });
 
       return ConfirmLoginModel.fromMap(result.data);
-    } on RestClientException catch (e, s) {
+    } on RestClientException {
       _log.error("erro ao confirma login");
       throw const Failure(message: "erro ao confirma login");
     }

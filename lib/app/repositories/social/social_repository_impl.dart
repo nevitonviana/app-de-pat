@@ -28,7 +28,7 @@ class SocialRepositoryImpl implements SocialRepository {
         case LoginStatus.operationInProgress:
           throw Failure(message: result.message ?? "Erro ao realizar login ");
       }
-    } catch (e, s) {
+    } catch (e) {
       throw const Failure(message: "Error ao logar com o facebbok");
     }
   }
@@ -54,7 +54,7 @@ class SocialRepositoryImpl implements SocialRepository {
       } else {
         throw const Failure(message: "Error ao realizar o  logar com o google");
       }
-    } catch (e, s) {
+    } catch (e) {
       throw ();
     }
   }

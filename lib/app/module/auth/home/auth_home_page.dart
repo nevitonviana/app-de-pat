@@ -25,7 +25,6 @@ class _AuthHomePageState extends State<AuthHomePage> {
       } else {
         Modular.to.navigate('/auth/login');
       }
-      print("object'1111");
       WidgetsBinding.instance.addPersistentFrameCallback((_) {});
     });
     final greeting = Observable('Hello World');

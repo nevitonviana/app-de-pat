@@ -30,7 +30,9 @@ abstract class AuthStoreBase with Store {
           await logout();
         }
       });
-    } catch (e) {}
+    } catch (e) {
+      throw ();
+    }
   }
 
   @action

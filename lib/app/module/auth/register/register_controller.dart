@@ -26,7 +26,7 @@ abstract class RegisterControllerBase with Store {
     } on UserExistsException {
       Loader.hide();
       Messages.alert("Email ja ultilizado");
-    } catch (e, s) {
+    } catch (e) {
       _log.error('Error ao cadastrar usuario');
       Loader.hide();
       Messages.alert("Erro ao registar usuario");

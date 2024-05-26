@@ -31,7 +31,7 @@ abstract class LoginControllerBase with Store {
       Modular.to.navigate("/auth/");
       Loader.hide();
     } on Failure catch (e, s) {
-      final errorMessage = e.message ?? "erro ao realizar login";
+      final errorMessage = e.message;
       _log.error(errorMessage, e, s);
       Messages.alert(errorMessage);
     } on UserNotExistsException {
@@ -51,7 +51,7 @@ abstract class LoginControllerBase with Store {
     } on Failure catch (e, s) {
       Loader.hide();
       _log.error("Erro ao realizar login", e, s);
-      Messages.alert(e.message ?? "Erro ao realizar login");
+      Messages.alert(e.message);
     }
   }
 }

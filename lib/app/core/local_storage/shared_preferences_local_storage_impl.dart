@@ -33,15 +33,15 @@ class SharedPreferencesLocalStorageImpl implements LocalStorage {
   Future<V?> write<V>(String key, V value) async {
     final sharedPreferences = await _instance;
     switch (V) {
-      case String:
+      case const (String):
         sharedPreferences.setString(key, value as String);
         break;
 
-      case int:
+      case const (int):
         sharedPreferences.setInt(key, value as int);
         break;
 
-      case bool:
+      case const (bool):
         sharedPreferences.setBool(key, value as bool);
         break;
 
@@ -56,5 +56,6 @@ class SharedPreferencesLocalStorageImpl implements LocalStorage {
       default:
         throw Exception('Type not supported');
     }
+    return null;
   }
 }
