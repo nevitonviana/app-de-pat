@@ -1,13 +1,15 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../core/core_module.dart';
+import 'address_controller.dart';
 import 'address_detail/address_detail_module.dart';
 import 'address_page.dart';
-import 'address_search_controller.dart';
+import 'widgets/address_search_controller.dart';
 
 class AddressModule extends Module {
   @override
   void binds(i) {
+    i.addLazySingleton(AddressController.new);
     i.addLazySingleton(AddressSearchController.new);
   }
 

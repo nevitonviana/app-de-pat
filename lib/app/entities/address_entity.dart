@@ -72,8 +72,8 @@ class AddressEntity {
     return AddressEntity(
       id: map[keyMapper('id')] as int,
       address: map[keyMapper('address')] as String,
-      lat: map[keyMapper('lat')] as double,
-      lng: map[keyMapper('lng')] as double,
+      lat: double.parse(map[keyMapper('lat')]),
+      lng: double.parse(map[keyMapper('lng')]),
       additional: map[keyMapper('additional')] as String,
     );
   }

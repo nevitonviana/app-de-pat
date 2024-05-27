@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 
-import '../../models/place_model.dart';
-import '../../services/address/address_service.dart';
+import '../../../models/place_model.dart';
+import '../../../services/address/address_service.dart';
 
 part 'address_search_controller.g.dart';
 
