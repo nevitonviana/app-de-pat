@@ -86,6 +86,13 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
     final address = await Modular.to.pushNamed('/address/detail/', arguments: placeModel);
     if (address is PlaceModel) {
       _placeModel = address;
+    } else if (address is AddressEntity) {
+      selectAddress(address);
     }
+  }
+
+  Future<void> selectAddress(AddressEntity addressEntity) async {
+    await _addressService.selectAddress(addressEntity);
+    Modular.to.pop();
   }
 }
