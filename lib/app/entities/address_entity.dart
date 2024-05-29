@@ -102,20 +102,20 @@ class AddressEntity {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'id': id.toString(),
       'address': address,
-      'lat': lat,
-      'lng': lng,
+      'lat': lat.toString(),
+      'lng': lng.toString(),
       'additional': additional,
     };
   }
 
   factory AddressEntity.fromMap(Map<String, dynamic> map) {
     return AddressEntity(
-      id: map['id']?.toInt(),
+      id: int.tryParse(map['id'].toString()) ?? 0,
       address: map['address'] ?? '',
-      lat: double.parse(map['lat'] ?? '0.0'),
-      lng: double.parse(map['lng'] ?? '0.0'),
+      lat: double.tryParse(map['lat']) ?? 0.0,
+      lng: double.tryParse(map['lng']) ?? 0.0,
       additional: map['additional'] ?? '',
     );
   }
