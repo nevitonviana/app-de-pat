@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:mobx/mobx.dart';
 
 import '../../core/life_cycle/page_life_cycle_state.dart';
+import '../../core/mixins/location_mixin.dart';
 import '../../core/ui/extensions/theme_extension.dart';
 import '../../models/place_model.dart';
 import 'address_controller.dart';
@@ -21,7 +24,41 @@ class AddressPage extends StatefulWidget {
   State<AddressPage> createState() => _AddressPageState();
 }
 
-class _AddressPageState extends PageLifeCycleState<AddressController, AddressPage> {
+class _AddressPageState extends PageLifeCycleState<AddressController, AddressPage> with LocationMixin {
+  final reactionDisposers = <ReactionDisposer>[];
+
+  @override
+  void initState() {
+    super.initState();
+    final reactionService =
+        reaction<Observable>((_) => controller.locationServiceUnavailable, (locationServiceUnavailable) {
+      if (locationServiceUnavailable.value) {
+        showDialogLocationServiceUnavailable();
+      }
+    });
+
+    final reactionLocationPermission =
+        reaction<Observable<LocationPermission>?>((_) => controller.locationPermission, (locationPermission) {
+      if (locationPermission != null && locationPermission.value == LocationPermission.denied) {
+        showDialogLocationDenied(
+          tryAgain: () => controller.myLocation(),
+        );
+      } else if (locationPermission != null && locationPermission.value == LocationPermission.deniedForever) {
+        showDialogLocationDeniedForever();
+      }
+    });
+
+    reactionDisposers.addAll([reactionLocationPermission, reactionService]);
+  }
+
+  @override
+  void dispose() {
+    for (var reaction in reactionDisposers) {
+      reaction();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

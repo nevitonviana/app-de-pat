@@ -22,10 +22,10 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
   List<AddressEntity> _addresses = [];
 
   @readonly
-  bool _locationServiceUnavailable = false;
+  var _locationServiceUnavailable = false.obs();
 
   @readonly
-  LocationPermission? _locationPermission;
+  Observable<LocationPermission>? _locationPermission;
 
   @override
   void onReady() {
@@ -43,7 +43,7 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
   Future<void> myLocation() async {
     final serviceEnable = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnable) {
-      _locationServiceUnavailable = true;
+      _locationServiceUnavailable = true.obs();
       return;
     }
 
@@ -53,12 +53,12 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
       case LocationPermission.denied:
         final permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
-          _locationPermission = permission;
+          _locationPermission = Observable(permission);
           return;
         }
         break;
       case LocationPermission.deniedForever:
-        _locationPermission = locationPermission;
+        _locationPermission = Observable(locationPermission);
         return;
       case LocationPermission.whileInUse:
       case LocationPermission.always:
@@ -72,14 +72,12 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
     final placeMark = await placemarkFromCoordinates(position.latitude, position.longitude);
     final place = placeMark.first;
     final address = "${place.thoroughfare} ${place.subThoroughfare}";
-    print("00000000000000000000000000");
-    print(address);
     final placeModel = PlaceModel(address: address, lat: position.latitude, lng: position.longitude);
     Loader.hide();
     goToAddressDetail(placeModel);
   }
 
   void goToAddressDetail(PlaceModel placeModel) {
-    Modular.to.pushNamed('/address/detail', arguments: placeModel);
+    Modular.to.pushNamed('/address/detail/', arguments: placeModel);
   }
 }
