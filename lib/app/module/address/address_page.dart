@@ -31,19 +31,19 @@ class _AddressPageState extends PageLifeCycleState<AddressController, AddressPag
   void initState() {
     super.initState();
     final reactionService =
-        reaction<Observable>((_) => controller.locationServiceUnavailable, (locationServiceUnavailable) {
-      if (locationServiceUnavailable.value) {
+        reaction<bool>((_) => controller.locationServiceUnavailable, (locationServiceUnavailable) {
+      if (locationServiceUnavailable) {
         showDialogLocationServiceUnavailable();
       }
     });
 
     final reactionLocationPermission =
-        reaction<Observable<LocationPermission>?>((_) => controller.locationPermission, (locationPermission) {
-      if (locationPermission != null && locationPermission.value == LocationPermission.denied) {
+        reaction<LocationPermission?>((_) => controller.locationPermission, (locationPermission) {
+      if (locationPermission != null && locationPermission == LocationPermission.denied) {
         showDialogLocationDenied(
           tryAgain: () => controller.myLocation(),
         );
-      } else if (locationPermission != null && locationPermission.value == LocationPermission.deniedForever) {
+      } else if (locationPermission != null && locationPermission == LocationPermission.deniedForever) {
         showDialogLocationDeniedForever();
       }
     });
@@ -81,10 +81,14 @@ class _AddressPageState extends PageLifeCycleState<AddressController, AddressPag
                 ),
               ),
               const SizedBox(height: 20),
-              _AddressSearchWidget(
-                addressSelectedCallback: (place) {
-                  controller.goToAddressDetail(place);
-                },
+              Observer(
+                builder: (_) => _AddressSearchWidget(
+                  key: UniqueKey(),
+                  addressSelectedCallback: (place) {
+                    controller.goToAddressDetail(place);
+                  },
+                  place: controller.placeModel,
+                ),
               ),
               const SizedBox(height: 30),
               ListTile(

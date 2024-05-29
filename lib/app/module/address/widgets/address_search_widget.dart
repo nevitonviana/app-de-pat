@@ -4,8 +4,13 @@ typedef AddressSelectedCallback = void Function(PlaceModel);
 
 class _AddressSearchWidget extends StatefulWidget {
   final AddressSelectedCallback addressSelectedCallback;
+  final PlaceModel? place;
 
-  const _AddressSearchWidget({required this.addressSelectedCallback});
+  const _AddressSearchWidget({
+    super.key,
+    required this.addressSelectedCallback,
+    required this.place,
+  });
 
   @override
   State<_AddressSearchWidget> createState() => _AddressSearchWidgetState();
@@ -13,12 +18,25 @@ class _AddressSearchWidget extends StatefulWidget {
 
 class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
   final controller = Modular.get<AddressSearchController>();
+  final searchTextEc = TextEditingController();
+  final searchTextFn = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.place != null) {
+      searchTextEc.text = widget.place?.address ?? '';
+      searchTextFn.requestFocus();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return TypeAheadField(
-      builder: (context, controller, focusNode) {
-        final borde = OutlineInputBorder(
+      controller: searchTextEc,
+      focusNode: searchTextFn,
+      builder: (_, __, ___) {
+        final border = OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: const BorderSide(
               style: BorderStyle.none,
@@ -27,17 +45,17 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
           elevation: 10,
           borderRadius: BorderRadius.circular(20),
           child: TextFormField(
-            focusNode: focusNode,
-            // focusNode: searchTextFn,
-            // controller: searchTextEc,
-            controller: controller,
+            // focusNode: focusNode,
+            focusNode: searchTextFn,
+            controller: searchTextEc,
+            // controller: controller,
             decoration: InputDecoration(
               prefixIcon: const Icon(Icons.location_on),
               hintText: "insira um endereco",
-              border: borde,
-              disabledBorder: borde,
-              focusedBorder: borde,
-              enabledBorder: borde,
+              border: border,
+              disabledBorder: border,
+              focusedBorder: border,
+              enabledBorder: border,
             ),
           ),
         );

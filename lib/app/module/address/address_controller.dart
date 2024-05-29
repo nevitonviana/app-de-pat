@@ -22,10 +22,13 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
   List<AddressEntity> _addresses = [];
 
   @readonly
-  var _locationServiceUnavailable = false.obs();
+  var _locationServiceUnavailable = false;
 
   @readonly
-  Observable<LocationPermission>? _locationPermission;
+  LocationPermission? _locationPermission;
+
+  @readonly
+  PlaceModel? _placeModel;
 
   @override
   void onReady() {
@@ -41,9 +44,11 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
 
   @action
   Future<void> myLocation() async {
+    _locationPermission = null;
+    _locationServiceUnavailable = false;
     final serviceEnable = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnable) {
-      _locationServiceUnavailable = true.obs();
+      _locationServiceUnavailable = true;
       return;
     }
 
@@ -53,12 +58,12 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
       case LocationPermission.denied:
         final permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
-          _locationPermission = Observable(permission);
+          _locationPermission = permission;
           return;
         }
         break;
       case LocationPermission.deniedForever:
-        _locationPermission = Observable(locationPermission);
+        _locationPermission = locationPermission;
         return;
       case LocationPermission.whileInUse:
       case LocationPermission.always:
@@ -77,7 +82,10 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
     goToAddressDetail(placeModel);
   }
 
-  void goToAddressDetail(PlaceModel placeModel) {
-    Modular.to.pushNamed('/address/detail/', arguments: placeModel);
+  Future<void> goToAddressDetail(PlaceModel placeModel) async {
+    final address = await Modular.to.pushNamed('/address/detail/', arguments: placeModel);
+    if (address is PlaceModel) {
+      _placeModel = address;
+    }
   }
 }
