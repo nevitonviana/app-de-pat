@@ -61,67 +61,71 @@ class _AddressPageState extends PageLifeCycleState<AddressController, AddressPag
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: context.primaryColorDark),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) => controller.addressWasSelected(),
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: context.primaryColorDark),
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
         backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(13),
-          child: Column(
-            children: [
-              Text(
-                "Adicionar ou escolha um endereço",
-                style: context.textTheme.headlineMedium?.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Observer(
-                builder: (_) => _AddressSearchWidget(
-                  key: UniqueKey(),
-                  addressSelectedCallback: (place) {
-                    controller.goToAddressDetail(place);
-                  },
-                  place: controller.placeModel,
-                ),
-              ),
-              const SizedBox(height: 30),
-              ListTile(
-                onTap: () => controller.myLocation(),
-                leading: const CircleAvatar(
-                  backgroundColor: Colors.red,
-                  radius: 30,
-                  child: Icon(
-                    Icons.near_me,
-                    color: Colors.white,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(13),
+            child: Column(
+              children: [
+                Text(
+                  "Adicionar ou escolha um endereço",
+                  style: context.textTheme.headlineMedium?.copyWith(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                title: const Text(
-                  "Localização Atual",
-                  style: TextStyle(fontSize: 18),
+                const SizedBox(height: 20),
+                Observer(
+                  builder: (_) => _AddressSearchWidget(
+                    key: UniqueKey(),
+                    addressSelectedCallback: (place) {
+                      controller.goToAddressDetail(place);
+                    },
+                    place: controller.placeModel,
+                  ),
                 ),
-                trailing: const Icon(Icons.arrow_forward_ios_outlined),
-              ),
-              const SizedBox(height: 20),
-              Observer(
-                builder: (_) => Column(
-                  children: controller.addresses
-                      .map(
-                        (e) => _AddressItem(
-                          additional: e.additional,
-                          address: e.address,
-                          onTap: () => controller.selectAddress(e),
-                        ),
-                      )
-                      .toList(),
+                const SizedBox(height: 30),
+                ListTile(
+                  onTap: () => controller.myLocation(),
+                  leading: const CircleAvatar(
+                    backgroundColor: Colors.red,
+                    radius: 30,
+                    child: Icon(
+                      Icons.near_me,
+                      color: Colors.white,
+                    ),
+                  ),
+                  title: const Text(
+                    "Localização Atual",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios_outlined),
                 ),
-              ),
-            ],
+                const SizedBox(height: 20),
+                Observer(
+                  builder: (_) => Column(
+                    children: controller.addresses
+                        .map(
+                          (e) => _AddressItem(
+                            additional: e.additional,
+                            address: e.address,
+                            onTap: () => controller.selectAddress(e),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
