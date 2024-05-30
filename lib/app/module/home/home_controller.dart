@@ -30,8 +30,10 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
   @action
   Future<void> _getAddressSelected() async {
     _addressEntity ??= await _addressService.getAddressSelected();
-    goToAddressPage();
-    if (_addressEntity == null) {}
+
+    if (_addressEntity == null) {
+      goToAddressPage();
+    }
   }
 
   @action
