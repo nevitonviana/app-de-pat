@@ -11,7 +11,10 @@ class HomeModule extends Module {
   }
 
   @override
-  List<Module> get imports => [CoreModule()];
+  List<Module> get imports => [
+        CoreModule(),
+        // SupplierCoreModule(),
+      ];
 
   @override
   void routes(r) {
