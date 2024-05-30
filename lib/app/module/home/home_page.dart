@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../core/life_cycle/page_life_cycle_state.dart';
 import 'home_controller.dart';
 import 'widgets/home_app_bar.dart';
+
+part 'widgets/home_address_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,13 +19,20 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      drawer: Drawer(
+      drawer: const Drawer(
         backgroundColor: Colors.black,
       ),
       body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              HomeAppBar(),
+            return <Widget>[
+              HomeAppBar(
+                controller: controller,
+              ),
+              SliverToBoxAdapter(
+                child: _HomeAddressWidget(
+                  controller: controller,
+                ),
+              )
             ];
           },
           body: Container()),
