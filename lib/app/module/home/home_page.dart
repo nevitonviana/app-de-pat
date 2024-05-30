@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../core/life_cycle/page_life_cycle_state.dart';
+import '../../core/ui/extensions/theme_extension.dart';
 import 'home_controller.dart';
 import 'widgets/home_app_bar.dart';
 
 part 'widgets/home_address_widget.dart';
+part 'widgets/home_categories_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,7 +34,8 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
                 child: _HomeAddressWidget(
                   controller: controller,
                 ),
-              )
+              ),
+              SliverToBoxAdapter(child: HomeCategoriesWidget()),
             ];
           },
           body: Container()),
