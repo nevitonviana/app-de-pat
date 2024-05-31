@@ -1,6 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../core/core_module.dart';
+import '../../core/supplier/supplier_core_module.dart';
 import 'home_controller.dart';
 import 'home_page.dart';
 
@@ -12,8 +12,8 @@ class HomeModule extends Module {
 
   @override
   List<Module> get imports => [
-        CoreModule(),
-        // SupplierCoreModule(),
+        // CoreModule(), ja foi importado pelo supplier, talzer pode ser um bog
+        SupplierCoreModule(),
       ];
 
   @override

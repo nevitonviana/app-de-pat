@@ -64,11 +64,11 @@ class UserServiceImpl implements UserService {
         final userCredential =
             await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
 
-        final userVerified = userCredential.user?.emailVerified ?? false;
-        if (!userVerified) {
-          userCredential.user?.sendEmailVerification();
-          throw const Failure(message: "email de confirmação por favor verifique sua caixa de spam");
-        }
+        // final userVerified = userCredential.user?.emailVerified ?? false;
+        // if (!userVerified) {
+        //   userCredential.user?.sendEmailVerification();
+        //   throw const Failure(message: "email de confirmação por favor verifique sua caixa de spam");
+        // }
         final accessToken = await _repository.login(email, password);
         await _saveAccessToken(accessToken);
         await _confirmLogin();

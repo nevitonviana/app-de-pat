@@ -40,14 +40,14 @@ class RoundedButtonWithIcon extends StatelessWidget {
                 size: 20.w,
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: VerticalDivider(
-                color: Colors.white,
-                width: 200,
-                thickness: 2,
-              ),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.symmetric(vertical: 8.0),
+            //   child: VerticalDivider(
+            //     color: Colors.white,
+            //     width: 200,
+            //     thickness: 2,
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.all(0),
               child: Text(

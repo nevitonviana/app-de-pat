@@ -25,7 +25,7 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<void> register(String email, String password) async {
     try {
-      await _restClient.unauth().post('/auth/register', data: {
+      await _restClient.unauth().post('/auth/register/', data: {
         'email': email,
         'password': password,
       });

@@ -25,14 +25,14 @@ class _LoginRegisterButtons extends StatelessWidget {
           onTap: () {
             controller.socialLogin(SocialLoginType.google);
           },
-          width: .42,
+          width: .42.sw,
           color: const Color(0xffe15031),
           icon: Cuidapet.google,
           label: "Google",
         ),
         RoundedButtonWithIcon(
           onTap: () {
-            Navigator.pushNamed(context, '/auth/register');
+            Navigator.pushNamed(context, '/register');
           },
           width: .42.sw,
           color: context.primaryColorDark,

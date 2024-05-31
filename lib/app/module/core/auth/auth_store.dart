@@ -29,6 +29,7 @@ abstract class AuthStoreBase with Store {
   Future<void> loadUserLogged() async {
     try {
       final userModelJson = await _localStorage.read<String>(Constants.LOCAL_STORAGE_USER_LOGGED_DATA_KEY);
+      print("aaaaaaaaaa");
       if (userModelJson != null) {
         _userLogged = UserModel.fromMap(userModelJson as Map<String, dynamic>);
       } else {
