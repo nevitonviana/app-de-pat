@@ -11,6 +11,8 @@ import '../../services/supplier/supplier_service.dart';
 
 part 'home_controller.g.dart';
 
+enum SupplierPageType { list, card }
+
 class HomeController = HomeControllerBase with _$HomeController;
 
 abstract class HomeControllerBase with Store, ControllerLifeCycle {
@@ -27,6 +29,9 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
   AddressEntity? _addressEntity;
   @readonly
   var _listCategories = <SupplierCategoryModel>[];
+
+  @readonly
+  var _supplierPageTypeSelected = SupplierPageType.list;
 
   @override
   Future<void> onReady() async {
@@ -54,6 +59,7 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
     if (address != null) _addressEntity = address;
   }
 
+  @action
   Future<void> _getCategories() async {
     try {
       final categories = await _supplierService.getCategories();
@@ -63,4 +69,7 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
       throw Exception();
     }
   }
+
+  @action
+  void changeTabSupplier(SupplierPageType supplierPageType) => _supplierPageTypeSelected = supplierPageType;
 }

@@ -7,8 +7,8 @@ class _LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<_LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final _loginEC = TextEditingController();
-  final _passwordEC = TextEditingController();
+  final _loginEC = TextEditingController(text: "nevi@nevi.com");
+  final _passwordEC = TextEditingController(text: "123456");
 
   @override
   void dispose() {

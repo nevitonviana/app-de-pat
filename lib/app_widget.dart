@@ -30,7 +30,7 @@ class _AppWidgetState extends State<AppWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Modular.setInitialRoute('/home/');
+    Modular.setInitialRoute('/home/');
     Modular.setObservers([asuka.Asuka.asukaHeroController]);
     return ScreenUtilInit(
       designSize: const Size(390, 844),

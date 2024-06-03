@@ -59,8 +59,7 @@ class UserServiceImpl implements UserService {
       if (loginMethods.isEmpty) {
         throw UserExistsException();
       }
-
-      if (loginMethods.contains("passoword")) {
+      if (loginMethods.contains("passoword") || loginMethods[0] == "password") {
         final userCredential =
             await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
 
