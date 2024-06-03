@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../core/life_cycle/page_life_cycle_state.dart';
+import '../../core/ui/extensions/size_screen_extension.dart';
 import '../../core/ui/extensions/theme_extension.dart';
 import '../../models/supplier_category_model.dart';
 import 'home_controller.dart';
