@@ -163,22 +163,31 @@ class _HomeSupplierGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverGrid(
-          delegate: SliverChildBuilderDelegate(
-            childCount: 10,
-            (context, index) {
-              return _HomeSupplierCardItemWidget();
-            },
-          ),
-          gridDelegate:
-              const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 1.1),
-        ),
+        Observer(builder: (context) {
+          return SliverGrid(
+            delegate: SliverChildBuilderDelegate(
+              childCount: homeController.listSuppliersByAddress.length,
+              (context, index) {
+                final supplier = homeController.listSuppliersByAddress[index];
+                return _HomeSupplierCardItemWidget(
+                  supplierNearbyMeModel: supplier,
+                );
+              },
+            ),
+            gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 1.1),
+          );
+        }),
       ],
     );
   }
 }
 
 class _HomeSupplierCardItemWidget extends StatelessWidget {
+  final SupplierNearbyMeModel supplierNearbyMeModel;
+
+  const _HomeSupplierCardItemWidget({super.key, required this.supplierNearbyMeModel});
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -202,13 +211,13 @@ class _HomeSupplierCardItemWidget extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "Clinia cente",
+                    supplierNearbyMeModel.name,
                     style: context.textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
-                  const Text(
-                    "1.32 Km de distancia",
+                  Text(
+                    "${supplierNearbyMeModel.distance.toStringAsFixed(2)} Km de distancia",
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
@@ -223,14 +232,14 @@ class _HomeSupplierCardItemWidget extends StatelessWidget {
             backgroundColor: Colors.grey[200],
           ),
         ),
-        const Positioned(
+        Positioned(
           top: 4,
           left: 0,
           right: 0,
           child: Center(
             child: CircleAvatar(
               radius: 35,
-              backgroundImage: NetworkImage(""),
+              backgroundImage: NetworkImage(supplierNearbyMeModel.logo),
             ),
           ),
         )
