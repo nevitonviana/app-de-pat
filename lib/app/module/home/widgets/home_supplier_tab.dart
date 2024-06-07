@@ -3,7 +3,7 @@ part of '../home_page.dart';
 class _HomeSupplierTab extends StatelessWidget {
   final HomeController homeController;
 
-  const _HomeSupplierTab({super.key, required this.homeController});
+  const _HomeSupplierTab({required this.homeController});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,9 @@ class _HomeSupplierTab extends StatelessWidget {
               return AnimatedSwitcher(
                 duration: const Duration(milliseconds: 4000),
                 child: homeController.supplierPageTypeSelected == SupplierPageType.list
-                    ? _HomeSupplierList()
+                    ? _HomeSupplierList(
+                        homeController: homeController,
+                      )
                     : _HomeSupplierGrid(),
               );
             },
@@ -30,24 +32,35 @@ class _HomeSupplierTab extends StatelessWidget {
 }
 
 class _HomeSupplierList extends StatelessWidget {
+  final HomeController _homeController;
+
+  const _HomeSupplierList({required HomeController homeController}) : _homeController = homeController;
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            childCount: 10,
-            (context, index) {
-              return _HomeSupplierListItemWidget();
-            },
-          ),
-        ),
+        Observer(builder: (context) {
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              childCount: _homeController.listSuppliersByAddress.length,
+              (context, index) {
+                final supplier = _homeController.listSuppliersByAddress[index];
+                return _HomeSupplierListItemWidget(supplierNearbyMeModel: supplier);
+              },
+            ),
+          );
+        }),
       ],
     );
   }
 }
 
 class _HomeSupplierListItemWidget extends StatelessWidget {
+  final SupplierNearbyMeModel supplierNearbyMeModel;
+
+  const _HomeSupplierListItemWidget({required this.supplierNearbyMeModel});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -70,22 +83,22 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                 Expanded(
                   child: Container(
                     margin: const EdgeInsets.only(left: 50),
-                    child: const Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Clienica  central 125",
+                          supplierNearbyMeModel.name,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.location_on,
                               size: 16,
                             ),
-                            Text("1.34 Km de distancia")
+                            Text("${supplierNearbyMeModel.distance.toStringAsFixed(2)} Km de distancia")
                           ],
                         ),
                       ],
@@ -126,8 +139,8 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                 ),
                 color: Colors.grey,
                 borderRadius: BorderRadius.circular(100),
-                image: const DecorationImage(
-                  image: AssetImage("assets/images/logo.png"),
+                image: DecorationImage(
+                  image: NetworkImage(supplierNearbyMeModel.logo),
                   fit: BoxFit.contain,
                 ),
               ),

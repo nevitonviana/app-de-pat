@@ -6,6 +6,7 @@ import '../../core/ui/widgets/loader.dart';
 import '../../core/ui/widgets/messages.dart';
 import '../../entities/address_entity.dart';
 import '../../models/supplier_category_model.dart';
+import '../../models/supplier_nearby_me_model.dart';
 import '../../services/address/address_service.dart';
 import '../../services/supplier/supplier_service.dart';
 
@@ -25,6 +26,18 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
   })  : _addressService = addressService,
         _supplierService = supplierService;
 
+  @override
+  void onInit([Map<String, dynamic>? params]) {
+    findSuppliersReactionDisposer = reaction((_) => _addressEntity, (address) {
+      findSupplierByAddress();
+    });
+  }
+
+  @override
+  void dispose() {
+    findSuppliersReactionDisposer();
+  }
+
   @readonly
   AddressEntity? _addressEntity;
   @readonly
@@ -32,6 +45,10 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
 
   @readonly
   var _supplierPageTypeSelected = SupplierPageType.list;
+  @readonly
+  var _listSuppliersByAddress = <SupplierNearbyMeModel>[];
+
+  late ReactionDisposer findSuppliersReactionDisposer;
 
   @override
   Future<void> onReady() async {
@@ -72,4 +89,14 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
 
   @action
   void changeTabSupplier(SupplierPageType supplierPageType) => _supplierPageTypeSelected = supplierPageType;
+
+  @action
+  Future<void> findSupplierByAddress() async {
+    if (_addressEntity != null) {
+      final suppliers = await _supplierService.findNearby(_addressEntity!);
+      _listSuppliersByAddress = [...suppliers];
+    } else {
+      Messages.alert("Seleciona um enderço");
+    }
+  }
 }
