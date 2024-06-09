@@ -54,6 +54,8 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
 
   late ReactionDisposer findSuppliersReactionDisposer;
 
+  var _nameSearchText = '';
+
   @override
   Future<void> onReady() async {
     try {
@@ -116,12 +118,23 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
     filterSupplier();
   }
 
+  void filterSupplierByName(String name) {
+    _nameSearchText = name;
+    filterSupplier();
+  }
+
   @action
   void filterSupplier() {
     var suppliers = [..._listSuppliersByAddressCache];
     if (_supplierCategoryFilterSelected != null) {
       suppliers = _listSuppliersByAddress
           .where((supplier) => supplier.category == _supplierCategoryFilterSelected?.id)
+          .toList();
+    }
+
+    if (_nameSearchText.isNotEmpty) {
+      suppliers = suppliers
+          .where((supplier) => supplier.name.toLowerCase().contains(_nameSearchText.toLowerCase()))
           .toList();
     }
     _listSuppliersByAddress == [...suppliers];
