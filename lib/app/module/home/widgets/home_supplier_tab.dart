@@ -186,7 +186,7 @@ class _HomeSupplierGrid extends StatelessWidget {
 class _HomeSupplierCardItemWidget extends StatelessWidget {
   final SupplierNearbyMeModel supplierNearbyMeModel;
 
-  const _HomeSupplierCardItemWidget({super.key, required this.supplierNearbyMeModel});
+  const _HomeSupplierCardItemWidget({required this.supplierNearbyMeModel});
 
   @override
   Widget build(BuildContext context) {

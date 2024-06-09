@@ -47,6 +47,10 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
   var _supplierPageTypeSelected = SupplierPageType.list;
   @readonly
   var _listSuppliersByAddress = <SupplierNearbyMeModel>[];
+  var _listSuppliersByAddressCache = <SupplierNearbyMeModel>[];
+
+  @readonly
+  SupplierCategoryModel? _supplierCategoryFilterSelected;
 
   late ReactionDisposer findSuppliersReactionDisposer;
 
@@ -95,8 +99,31 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
     if (_addressEntity != null) {
       final suppliers = await _supplierService.findNearby(_addressEntity!);
       _listSuppliersByAddress = [...suppliers];
+      _listSuppliersByAddressCache = [...suppliers];
+      filterSupplier();
     } else {
       Messages.alert("Seleciona um enderço");
     }
+  }
+
+  @action
+  void filterSupplierCategory(SupplierCategoryModel categoryModel) {
+    if (_supplierCategoryFilterSelected == categoryModel) {
+      _supplierCategoryFilterSelected == null;
+    } else {
+      _supplierCategoryFilterSelected = categoryModel;
+    }
+    filterSupplier();
+  }
+
+  @action
+  void filterSupplier() {
+    var suppliers = [..._listSuppliersByAddressCache];
+    if (_supplierCategoryFilterSelected != null) {
+      suppliers = _listSuppliersByAddress
+          .where((supplier) => supplier.category == _supplierCategoryFilterSelected?.id)
+          .toList();
+    }
+    _listSuppliersByAddress == [...suppliers];
   }
 }
