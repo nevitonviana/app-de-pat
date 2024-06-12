@@ -12,7 +12,7 @@ class SupplierPage extends StatefulWidget {
 
 class _SupplierPageState extends State<SupplierPage> {
   late ScrollController _scrollController;
-  bool sliverCollapsed = false;
+  final sliverCollapsedVN = ValueNotifier(false);
 
   @override
   void initState() {
@@ -20,15 +20,17 @@ class _SupplierPageState extends State<SupplierPage> {
     _scrollController = ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.offset > 180 && !_scrollController.position.outOfRange) {
-        setState(() {
-          sliverCollapsed = true;
-        });
+        sliverCollapsedVN.value = true;
       } else if (_scrollController.offset <= 180 && !_scrollController.position.outOfRange) {
-        setState(() {
-          sliverCollapsed = false;
-        });
+        sliverCollapsedVN.value = false;
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -46,9 +48,12 @@ class _SupplierPageState extends State<SupplierPage> {
         slivers: [
           SliverAppBar(
             expandedHeight: 200,
-            title: Visibility(
-              visible: sliverCollapsed,
-              child: Text(""),
+            title: ValueListenableBuilder<bool>(
+              valueListenable: sliverCollapsedVN,
+              builder: (_, sliverCollapsedValue, child) => Visibility(
+                visible: sliverCollapsedValue,
+                child: Text(""),
+              ),
             ),
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
