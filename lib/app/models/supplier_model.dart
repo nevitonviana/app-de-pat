@@ -4,6 +4,7 @@ class SupplierModel {
   final int id;
   final String name;
   final String logo;
+  final String phone;
   final String address;
   final double lat;
   final double lng;
@@ -14,6 +15,7 @@ class SupplierModel {
     required this.id,
     required this.name,
     required this.logo,
+    required this.phone,
     required this.address,
     required this.lat,
     required this.lng,
@@ -28,6 +30,7 @@ class SupplierModel {
           id == other.id &&
           name == other.name &&
           logo == other.logo &&
+          phone == other.phone &&
           address == other.address &&
           lat == other.lat &&
           lng == other.lng &&
@@ -38,6 +41,7 @@ class SupplierModel {
       id.hashCode ^
       name.hashCode ^
       logo.hashCode ^
+      phone.hashCode ^
       address.hashCode ^
       lat.hashCode ^
       lng.hashCode ^
@@ -45,13 +49,14 @@ class SupplierModel {
 
   @override
   String toString() {
-    return 'SupplierModel{ id: $id, name: $name, logo: $logo, address: $address, latitude: $lat, lng: $lng, category: $category,}';
+    return 'SupplierModel{ id: $id, name: $name, logo: $logo, phone: $phone, address: $address, lat: $lat, lng: $lng, category: $category,}';
   }
 
   SupplierModel copyWith({
     int? id,
     String? name,
     String? logo,
+    String? phone,
     String? address,
     double? lat,
     double? lng,
@@ -61,6 +66,7 @@ class SupplierModel {
       id: id ?? this.id,
       name: name ?? this.name,
       logo: logo ?? this.logo,
+      phone: phone ?? this.phone,
       address: address ?? this.address,
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
@@ -77,9 +83,10 @@ class SupplierModel {
       keyMapper('id'): id,
       keyMapper('name'): name,
       keyMapper('logo'): logo,
+      keyMapper('phone'): phone,
       keyMapper('address'): address,
-      keyMapper('latitude'): lat,
-      keyMapper('longitude'): lng,
+      keyMapper('lat'): lat,
+      keyMapper('lng'): lng,
       keyMapper('category'): category,
     };
   }
@@ -94,9 +101,10 @@ class SupplierModel {
       id: map[keyMapper('id')] as int,
       name: map[keyMapper('name')] as String,
       logo: map[keyMapper('logo')] as String,
+      phone: map[keyMapper('phone')] as String,
       address: map[keyMapper('address')] as String,
-      lat: map[keyMapper('latitude')] as double,
-      lng: map[keyMapper('longitude')] as double,
+      lat: map[keyMapper('lat')] as double,
+      lng: map[keyMapper('lng')] as double,
       category: map[keyMapper('category')] as SupplierCategoryModel,
     );
   }

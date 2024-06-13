@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/ui/extensions/theme_extension.dart';
-import 'SupplierServiceWidget.dart';
+import '../../../models/supplier_model.dart';
 
 class SupplierDetail extends StatelessWidget {
-  const SupplierDetail({super.key});
+  final SupplierModel supplier;
+
+  const SupplierDetail({
+    super.key,
+    required this.supplier,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class SupplierDetail extends StatelessWidget {
         children: [
           Center(
             child: Text(
-              "",
+              supplier.name,
               style: context.textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -35,38 +40,14 @@ class SupplierDetail extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          const ListTile(
-            leading: Icon(Icons.location_city_outlined),
-            title: Text(""),
+          ListTile(
+            leading: const Icon(Icons.location_city_outlined),
+            title: Text(supplier.address),
           ),
-          const ListTile(
-            leading: Icon(Icons.local_phone_outlined),
-            title: Text(""),
+          ListTile(
+            leading: const Icon(Icons.local_phone_outlined),
+            title: Text(supplier.phone),
           ),
-          Divider(
-            thickness: 1,
-            color: context.primaryColor,
-          ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "Serviçoes (0 Selecionados)",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              childCount: 20,
-              (context, index) {
-                return const SupplierServiceWidget();
-              },
-            ),
-          )
         ],
       ),
     );
