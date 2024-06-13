@@ -30,6 +30,9 @@ abstract class SupplierControllerBase with Store, ControllerLifeCycle {
   @readonly
   var _supplierServices = <SupplierServicesModel>[];
 
+  @readonly
+  var _servicesSelected = <SupplierServicesModel>[].asObservable();
+
   @override
   void onInit([Map<String, dynamic>? params]) {
     _supplierId = params?['supplierId'] ?? 0;
@@ -67,4 +70,17 @@ abstract class SupplierControllerBase with Store, ControllerLifeCycle {
       Messages.alert("Erro ao buscar serevices do fornecedor");
     }
   }
+
+  @action
+  void addOrRemoveService({required SupplierServicesModel supplierServicesModel}) {
+    if (_servicesSelected.contains(supplierServicesModel)) {
+      _servicesSelected.remove(supplierServicesModel);
+    } else {
+      _servicesSelected.add(supplierServicesModel);
+    }
+  }
+
+  bool isServiceSelected(SupplierServicesModel servicesModel) => _servicesSelected.contains(servicesModel);
+
+  int get totalServiceSelected => _servicesSelected.length;
 }

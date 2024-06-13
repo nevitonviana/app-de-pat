@@ -48,12 +48,18 @@ class _SupplierPageState extends PageLifeCycleState<SupplierController, Supplier
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: const Text("Fazer agendamento"),
-        icon: const Icon(Icons.schedule_outlined),
-        backgroundColor: context.primaryColor,
-      ),
+      floatingActionButton: Observer(builder: (_) {
+        return AnimatedOpacity(
+          opacity: controller.totalServiceSelected > 0 ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          child: FloatingActionButton.extended(
+            onPressed: () {},
+            label: const Text("Fazer agendamento"),
+            icon: const Icon(Icons.schedule_outlined),
+            backgroundColor: context.primaryColor,
+          ),
+        );
+      }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Observer(builder: (context) {
         final supplier = controller.supplierModel;
@@ -96,12 +102,12 @@ class _SupplierPageState extends PageLifeCycleState<SupplierController, Supplier
               thickness: 1,
               color: context.primaryColor,
             ),
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Serviçoes (0 Selecionados)",
-                  style: TextStyle(
+                  "Serviços (${controller.totalServiceSelected} Selecionado${controller.totalServiceSelected > 1 ? 's' : ''})",
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),
@@ -115,6 +121,7 @@ class _SupplierPageState extends PageLifeCycleState<SupplierController, Supplier
                   final service = controller.supplierServices[index];
                   return SupplierServiceWidget(
                     services: service,
+                    controller: controller,
                   );
                 },
               ),
