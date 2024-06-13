@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../../core/ui/extensions/theme_extension.dart';
 import '../../../models/supplier_model.dart';
+import '../supplier_controller.dart';
 
 class SupplierDetail extends StatelessWidget {
   final SupplierModel supplier;
+  final SupplierController controller;
 
   const SupplierDetail({
     super.key,
     required this.supplier,
+    required this.controller,
   });
 
   @override
@@ -41,10 +44,12 @@ class SupplierDetail extends StatelessWidget {
             ),
           ),
           ListTile(
+            onTap: () => controller.goToGeoOrCopyAddressToClipart(),
             leading: const Icon(Icons.location_city_outlined),
             title: Text(supplier.address),
           ),
           ListTile(
+            onTap: () => controller.goToPhoneOrCopyPhoneToClipart(),
             leading: const Icon(Icons.local_phone_outlined),
             title: Text(supplier.phone),
           ),

@@ -53,7 +53,7 @@ class _SupplierPageState extends PageLifeCycleState<SupplierController, Supplier
           opacity: controller.totalServiceSelected > 0 ? 1 : 0,
           duration: const Duration(milliseconds: 300),
           child: FloatingActionButton.extended(
-            onPressed: () {},
+            onPressed: controller.goToSchedule,
             label: const Text("Fazer agendamento"),
             icon: const Icon(Icons.schedule_outlined),
             backgroundColor: context.primaryColor,
@@ -96,6 +96,7 @@ class _SupplierPageState extends PageLifeCycleState<SupplierController, Supplier
             SliverToBoxAdapter(
               child: SupplierDetail(
                 supplier: supplier,
+                controller: controller,
               ),
             ),
             Divider(
