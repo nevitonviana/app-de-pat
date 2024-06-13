@@ -6,6 +6,7 @@ import '../../../helpers/constants.dart';
 import '../../../local_storage/local_storage.dart';
 import '../../../logger/app_logger.dart';
 import '../../rest_client.dart';
+import '../../rest_client_exception.dart';
 
 class AuthRefreshTokenInterceptor extends Interceptor {
   final AuthStore _authStore;
@@ -61,19 +62,23 @@ class AuthRefreshTokenInterceptor extends Interceptor {
   }
 
   _refreshToken(DioException err) async {
-    final refreshToken = await _localSecureStorage.read(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY);
-    if (refreshToken == null) {
+    try {
+      final refreshToken = await _localSecureStorage.read(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY);
+      if (refreshToken == null) {
+        throw ExpireTokenException();
+      }
+
+      final resultRefresh = await _restClient.auth().put("/auth/refresh", data: {
+        'refresh_token': refreshToken,
+      });
+
+      await _localStorage.write<String>(
+          Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY, resultRefresh.data['access_token']);
+      await _localSecureStorage.write(
+          Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY, resultRefresh.data['refresh_token']);
+    } on RestClientException {
       throw ExpireTokenException();
     }
-
-    final resultRefresh = await _restClient.auth().put("/auth/refresh", data: {
-      'refresh_token': refreshToken,
-    });
-
-    await _localStorage.write<String>(
-        Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY, resultRefresh.data['access_token']);
-    await _localSecureStorage.write(
-        Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY, resultRefresh.data['refresh_token']);
   }
 
   _retryRequest(DioException err, ErrorInterceptorHandler handler) async {
